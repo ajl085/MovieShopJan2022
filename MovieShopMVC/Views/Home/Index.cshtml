@@ -1,0 +1,14 @@
+﻿@model List<ApplicationCore.Models.MovieCardModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@foreach (var movie in Model)
+{
+    <div>
+        <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
+            <img src="@movie.PosterUrl" alt="@movie.Title">
+        </a>
+    </div>
+}
