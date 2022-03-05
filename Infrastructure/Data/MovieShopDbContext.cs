@@ -19,10 +19,20 @@ namespace Infrastructure.Data
 
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Trailer> Trailers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>(ConfigureMovie);
+            modelBuilder.Entity<Trailer>(ConfigureTrailer);
+        }
+
+        private void ConfigureTrailer(EntityTypeBuilder<Trailer> builder)
+        {
+            builder.ToTable("Trailer");
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.TrailerUrl).HasMaxLength(2048);
+            builder.Property(t => t.Name).HasMaxLength(256);
         }
 
         private void ConfigureMovie(EntityTypeBuilder<Movie> builder)
