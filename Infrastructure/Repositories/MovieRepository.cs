@@ -22,5 +22,17 @@ namespace Infrastructure.Repositories
             var movies = _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(30);
             return movies;
         }
+
+        public override Movie GetById(int id)
+        {
+            // First throws exception if no matches found
+            // FirstOrDefault safest
+            // Single throws exception 0 or more than 1
+            // SingleOrDefault throws exception if more than 1
+            // Need to use Include method
+            var movieDetails = _dbContext.Movies.Include(m => m.Genres).ThenInclude(m => m.Genre).Include(m => m.Trailers).FirstOrDefault(m => m.Id == id);
+
+            return movieDetails;
+        }
     }
 }

@@ -17,6 +17,11 @@ namespace Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public virtual T GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public T Add(T entity)
         {
             throw new NotImplementedException();
@@ -28,11 +33,6 @@ namespace Infrastructure.Repositories
         }
 
         public IEnumerable<T> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T GetById(int id)
         {
             throw new NotImplementedException();
         }
