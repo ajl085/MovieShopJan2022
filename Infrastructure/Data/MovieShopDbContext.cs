@@ -20,12 +20,33 @@ namespace Infrastructure.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Trailer> Trailers { get; set; }
+        public DbSet<Cast> Casts { get; set; }
+        public DbSet<MovieCast> MovieCasts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>(ConfigureMovie);
             modelBuilder.Entity<Trailer>(ConfigureTrailer);
             modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
+            modelBuilder.Entity<Cast>(ConfigureCast);
+            modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
+    }
+
+        private void ConfigureMovieCast(EntityTypeBuilder<MovieCast> modelBuilder)
+        {
+            modelBuilder.ToTable("MovieCast");
+            modelBuilder.HasKey(mc => new { mc.CastId, mc.MovieId, mc.Character });
+            modelBuilder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);
+            modelBuilder.HasOne(mc => mc.Cast).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.CastId);
+        }
+
+        private void ConfigureCast(EntityTypeBuilder<Cast> modelBuilder)
+        {
+            modelBuilder.ToTable("Cast");
+            modelBuilder.HasKey(c => c.Id);
+            modelBuilder.Property(c => c.Name).HasMaxLength(128);
+            modelBuilder.Property(c => c.ProfilePath).HasMaxLength(2084);
+            modelBuilder.Property(c => c.TmdbUrl).HasMaxLength(2084);
         }
 
         private void ConfigureMovieGenre(EntityTypeBuilder<MovieGenre> modelBuilder)
