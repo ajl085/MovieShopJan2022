@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class CastRepository : ICastRepository
+    public class CastRepository
     {
     }
 }
