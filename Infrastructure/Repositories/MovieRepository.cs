@@ -30,7 +30,10 @@ namespace Infrastructure.Repositories
             // Single throws exception 0 or more than 1
             // SingleOrDefault throws exception if more than 1
             // Need to use Include method
-            var movieDetails = _dbContext.Movies.Include(m => m.Genres).ThenInclude(m => m.Genre).Include(m => m.Trailers).FirstOrDefault(m => m.Id == id);
+            var movieDetails = _dbContext.Movies.Include(m => m.Genres).ThenInclude(m => m.Genre)
+                .Include(m => m.MovieCasts).ThenInclude(m => m.Cast)
+                .Include(m => m.Trailers)
+                .FirstOrDefault(m => m.Id == id);
 
             return movieDetails;
         }
