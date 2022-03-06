@@ -4,11 +4,21 @@
     ViewData["Title"] = "Home Page";
 }
 
-@foreach (var movie in Model)
-{
-    <div>
-        <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-            <img src="@movie.PosterUrl" alt="@movie.Title">
-        </a>
+<div class="rounded">
+    <div class="container-fluid">
+        <div class="row">
+            @foreach (var movie in Model)
+            {
+                <div class="col-6 col-xl-2 col-sm-4 col-lg-3">
+
+                    <div class="card mb-4">
+                        <a asp-action="Details" asp-controller="Movies" asp-route-id="movie.Id">
+                            <img src="@movie.PosterUrl" alt="@movie.Title" class="img-fluid"/>
+                        </a>
+                    </div>
+
+                </div>
+            }
+        </div>
     </div>
-}
+</div>
