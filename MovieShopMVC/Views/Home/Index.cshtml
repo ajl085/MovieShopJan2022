@@ -10,13 +10,7 @@
             @foreach (var movie in Model)
             {
                 <div class="col-6 col-xl-2 col-sm-4 col-lg-3">
-
-                    <div class="card mb-4">
-                        <a asp-action="Details" asp-controller="Movies" asp-route-id="movie.Id">
-                            <img src="@movie.PosterUrl" alt="@movie.Title" class="img-fluid"/>
-                        </a>
-                    </div>
-
+                    <partial name="_MovieCard" model="movie" />
                 </div>
             }
         </div>
