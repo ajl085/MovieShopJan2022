@@ -16,7 +16,8 @@ namespace MovieShopMVC.Controllers
         {
             // Movie Service with Details
             // pass the movie details data to view
-            return View();
+            var movieDetails = _movieService.GetMovieDetails(id);
+            return View(movieDetails);
         }
     }
 }
