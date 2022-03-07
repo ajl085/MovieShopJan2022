@@ -23,6 +23,12 @@ namespace Infrastructure.Data
         public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<Cast> Casts { get; set; }
         public DbSet<MovieCast> MovieCasts { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,7 +37,70 @@ namespace Infrastructure.Data
             modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
             modelBuilder.Entity<Cast>(ConfigureCast);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
-    }
+            modelBuilder.Entity<User>(ConfigureUser);
+            modelBuilder.Entity<Role>(ConfigureRole);
+            modelBuilder.Entity<UserRole>(ConfigureUserRole);
+            modelBuilder.Entity<Review>(ConfigureReview);
+            modelBuilder.Entity<Favorite>(ConfigureFavorite);
+            modelBuilder.Entity<Purchase>(ConfigurePurchase);
+        }
+
+        private void ConfigurePurchase(EntityTypeBuilder<Purchase> modelBuilder)
+        {
+            modelBuilder.ToTable("Purchase");
+            modelBuilder.HasKey(p => p.Id);
+            modelBuilder.HasOne(p => p.User).WithMany(p => p.Purchases).HasForeignKey(p => p.UserId);
+            modelBuilder.HasOne(p => p.Movie).WithMany(p => p.Purchases).HasForeignKey(p => p.MovieId);
+
+            modelBuilder.Property(p => p.TotalPrice).HasColumnType("decimal(18, 2)").HasDefaultValue(9.9m);
+        }
+
+        private void ConfigureFavorite(EntityTypeBuilder<Favorite> modelBuilder)
+        {
+            modelBuilder.ToTable("Favorite");
+            modelBuilder.HasKey(f => f.Id);
+            modelBuilder.HasOne(f => f.User).WithMany(f => f.Favorites).HasForeignKey(f => f.UserId);
+            modelBuilder.HasOne(f => f.Movie).WithMany(f => f.Favorites).HasForeignKey(f => f.MovieId);
+        }
+
+        private void ConfigureReview(EntityTypeBuilder<Review> modelBuilder)
+        {
+            modelBuilder.ToTable("Review");
+            modelBuilder.HasKey(rw => new { rw.MovieId, rw.UserId });
+            modelBuilder.HasOne(rw => rw.User).WithMany(rw => rw.Reviews).HasForeignKey(rw => rw.UserId);
+            modelBuilder.HasOne(rw => rw.Movie).WithMany(rw => rw.Reviews).HasForeignKey(rw => rw.MovieId);
+
+            modelBuilder.Property(rw => rw.Rating).HasColumnType("decimal(3, 2)").HasDefaultValue(9.9m);
+        }
+
+        private void ConfigureUserRole(EntityTypeBuilder<UserRole> modelBuilder)
+        {
+            modelBuilder.ToTable("UserRole");
+            modelBuilder.HasKey(ur => new { ur.UserId, ur.RoleId });
+            modelBuilder.HasOne(ur => ur.User).WithMany(ur => ur.UserRoles).HasForeignKey(ur => ur.UserId);
+            modelBuilder.HasOne(ur => ur.Role).WithMany(ur => ur.UserRoles).HasForeignKey(ur => ur.RoleId);
+        }
+
+        private void ConfigureRole(EntityTypeBuilder<Role> modelBuilder)
+        {
+            modelBuilder.ToTable("Role");
+            modelBuilder.HasKey(r => r.Id);
+
+            modelBuilder.Property(r => r.Name).HasMaxLength(20);
+        }
+
+        private void ConfigureUser(EntityTypeBuilder<User> modelBuilder)
+        {
+            modelBuilder.ToTable("User");
+            modelBuilder.HasKey(u => u.Id);
+
+            modelBuilder.Property(u => u.FirstName).HasMaxLength(128);
+            modelBuilder.Property(u => u.LastName).HasMaxLength(128);
+            modelBuilder.Property(u => u.Email).HasMaxLength(256);
+            modelBuilder.Property(u => u.HashedPassword).HasMaxLength(1024);
+            modelBuilder.Property(u => u.Salt).HasMaxLength(1024);
+            modelBuilder.Property(u => u.PhoneNumber).HasMaxLength(16);
+        }
 
         private void ConfigureMovieCast(EntityTypeBuilder<MovieCast> modelBuilder)
         {

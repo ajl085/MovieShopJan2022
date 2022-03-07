@@ -44,7 +44,8 @@ namespace Infrastructure.Services
                     Id = cast.CastId,
                     Character = cast.Character,
                     Name = cast.Cast.Name,
-                    ProfilePath = cast.Cast.ProfilePath
+                    ProfilePath = cast.Cast.ProfilePath,
+                    TmdbUrl = cast.Cast.TmdbUrl
                 });
             }
 

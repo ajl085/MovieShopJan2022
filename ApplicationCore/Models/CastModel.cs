@@ -12,5 +12,6 @@ namespace ApplicationCore.Models
         public string Name { get; set; }
         public string ProfilePath { get; set; }
         public string Character { get; set; }
+        public string TmdbUrl { get; set; }
     }
 }
