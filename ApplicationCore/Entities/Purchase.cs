@@ -10,11 +10,11 @@ namespace ApplicationCore.Entities
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public System.Guid PurchaseNumber { get; set; }
+        public Guid PurchaseNumber { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime PurchaseDateTime { get; set; }
         public int MovieId { get; set; }
-        public User User { get; set; }
+        public User Customer { get; set; }
         public Movie Movie { get; set; }
     }
 }

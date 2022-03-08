@@ -14,7 +14,7 @@ namespace Infrastructure.Data
         // inject the dbcontext options
         public MovieShopDbContext(DbContextOptions<MovieShopDbContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<Genre> Genres { get; set; }
@@ -49,7 +49,10 @@ namespace Infrastructure.Data
         {
             modelBuilder.ToTable("Purchase");
             modelBuilder.HasKey(p => p.Id);
-            modelBuilder.HasOne(p => p.User).WithMany(p => p.Purchases).HasForeignKey(p => p.UserId);
+            modelBuilder.Property(p => p.Id).ValueGeneratedOnAdd();
+            modelBuilder.Property(p => p.PurchaseNumber).ValueGeneratedOnAdd();
+            modelBuilder.HasIndex(p => new { p.UserId, p.MovieId }).IsUnique();
+            modelBuilder.HasOne(p => p.Customer).WithMany(p => p.Purchases).HasForeignKey(p => p.UserId);
             modelBuilder.HasOne(p => p.Movie).WithMany(p => p.Purchases).HasForeignKey(p => p.MovieId);
 
             modelBuilder.Property(p => p.TotalPrice).HasColumnType("decimal(18, 2)").HasDefaultValue(9.9m);
@@ -94,6 +97,7 @@ namespace Infrastructure.Data
             modelBuilder.ToTable("User");
             modelBuilder.HasKey(u => u.Id);
 
+            modelBuilder.HasIndex(u => u.Email).IsUnique();
             modelBuilder.Property(u => u.FirstName).HasMaxLength(128);
             modelBuilder.Property(u => u.LastName).HasMaxLength(128);
             modelBuilder.Property(u => u.Email).HasMaxLength(256);
