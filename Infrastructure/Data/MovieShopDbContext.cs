@@ -111,7 +111,7 @@ namespace Infrastructure.Data
             modelBuilder.ToTable("MovieCast");
             modelBuilder.HasKey(mc => new { mc.CastId, mc.MovieId, mc.Character });
             modelBuilder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);
-            modelBuilder.HasOne(mc => mc.Cast).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.CastId);
+            modelBuilder.HasOne(mc => mc.Cast).WithMany(mc => mc.Movies).HasForeignKey(mc => mc.CastId);
         }
 
         private void ConfigureCast(EntityTypeBuilder<Cast> modelBuilder)

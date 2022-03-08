@@ -18,9 +18,9 @@ namespace Infrastructure.Services
             _castRepository = castRepository;
         }
 
-        public CastDetailsModel GetCastDetails(int id)
+        public async Task<CastDetailsModel> GetCastDetails(int id)
         {
-            var cast = _castRepository.GetById(id);
+            var cast = await _castRepository.GetById(id);
 
             var castDetails = new CastDetailsModel
             {
@@ -31,10 +31,10 @@ namespace Infrastructure.Services
                 ProfilePath = cast.ProfilePath
             };
 
-            castDetails.MovieCards = new List<MovieCardModel>();
-            foreach (var movieCard in cast.MovieCasts)
+            castDetails.Movies = new List<MovieCardModel>();
+            foreach (var movieCard in cast.Movies)
             {
-                castDetails.MovieCards.Add(new MovieCardModel
+                castDetails.Movies.Add(new MovieCardModel
                 {
                     Id = movieCard.MovieId,
                     Title = movieCard.Movie.Title

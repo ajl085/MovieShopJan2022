@@ -13,6 +13,5 @@ namespace ApplicationCore.Entities
         public string Character { get; set; }
         public Movie Movie { get; set; }
         public Cast Cast { get; set; }
-        public ICollection<MovieCast> MovieCasts { get; set; }
     }
 }
