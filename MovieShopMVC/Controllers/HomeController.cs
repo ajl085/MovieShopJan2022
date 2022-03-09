@@ -33,7 +33,7 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public IActionResult TopMovies()
         {
-            return View("Privacy");
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
