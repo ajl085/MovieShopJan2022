@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
+using ApplicationCore.Entities;
 
 namespace Infrastructure.Services
 {
@@ -20,7 +21,7 @@ namespace Infrastructure.Services
             _userRepository = userRepository;
         }
 
-        public async Task<bool> CreateUser(RegisterModel model)
+        public async Task<int> CreateUser(RegisterModel model)
         {
             // check whether user has registered with same email
             // go to user repository and get user record from user table by email
@@ -36,13 +37,37 @@ namespace Infrastructure.Services
             // generate a random salt
             // hash the password with salt
 
+            var salt = GetRandomSalt();
+            var hashedPassword = GetHashedPassword(model.Password, salt);
 
+            var user = new User {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                Salt = salt,
+                HashedPassword = hashedPassword,
+                DateOfBirth = model.DateOfBirth
+            };
 
+            // save the user to User Table
+            var createdUser = await _userRepository.Add(user);
+            return createdUser.Id;
         }
 
-        public Task<bool> ValidateUser(string email, string password)
+        public async Task<bool> ValidateUser(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                throw new Exception("Your username or password is invalid");
+            }
+
+            var hashedPassword = GetHashedPassword(password, user.Salt);
+            if (hashedPassword == user.HashedPassword)
+            {
+                return true;
+            }
+            return false;
         }
 
         private string GetRandomSalt()
