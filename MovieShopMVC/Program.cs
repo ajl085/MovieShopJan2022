@@ -3,6 +3,7 @@ using ApplicationCore.Contracts.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,15 @@ builder.Services.AddDbContext<MovieShopDbContext>( options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MovieShopDbConnection"));
 });
 
+// inject the authentication cookie information
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie( options =>
+    {
+        options.Cookie.Name = "MovieShopAuthCookie";
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.LoginPath = "/Account/Login";
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +45,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// before the authorization middleware
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
