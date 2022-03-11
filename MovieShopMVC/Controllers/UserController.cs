@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieShopMVC.Services;
 using System.Security.Claims;
 
 namespace MovieShopMVC.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly ICurrentUser _currentUser;
@@ -16,11 +18,7 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Purchases()
         {
-            var userAuth = _currentUser.IsAuthenticated;
-            if (userAuth)
-            {
-                var userId = _currentUser.UserId;
-            }
+            var userId = _currentUser.UserId;
             return View();
         }
 
