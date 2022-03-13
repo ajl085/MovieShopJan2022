@@ -17,6 +17,7 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+
             // var movieService = new MovieService();
             // model data
             var movies = await _movieService.GetTop30GrossingMovies();

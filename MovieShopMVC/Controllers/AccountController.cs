@@ -28,8 +28,14 @@ namespace MovieShopMVC.Controllers
         public async Task<IActionResult> Register(RegisterModel model)
         {
             // save the password and account info with salt
-            var user = await _accountService.CreateUser(model);
-            return RedirectToAction("Login");
+            if (ModelState.IsValid)
+            {
+                // save the database
+                var user = await _accountService.CreateUser(model);
+                return RedirectToAction("Login");
+            }
+
+            return View(model);
         }
 
         [HttpGet]
@@ -41,6 +47,10 @@ namespace MovieShopMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var userLoggedIn = await _accountService.ValidateUser(model.Email, model.Password);
             if (userLoggedIn != null)
             {
