@@ -24,6 +24,30 @@ namespace Infrastructure.Repositories
             return movies;
         }
 
+        public async Task<IEnumerable<Movie>> GetOwnedMoviesByUser(int userId)
+        {
+            // get total owned movies count for the user
+            var totalMoviesOwnedByUser = await _dbContext.Purchases.Where(p => p.UserId == userId).CountAsync();
+
+            // get the actual movies from MovieGenre and Movie Table
+            if (totalMoviesOwnedByUser == 0)
+            {
+                throw new Exception("User does not own any movies");
+            }
+
+            var movies = await _dbContext.Purchases.Where(u => u.UserId == userId).Include(m => m.Movie)
+                .OrderBy(m => m.MovieId)
+                .Select(m => new Movie
+                {
+                    Id = m.MovieId,
+                    PosterUrl = m.Movie.PosterUrl,
+                    Title = m.Movie.Title
+                })
+                .ToListAsync();
+
+            return movies;
+        }
+
         public override async Task<Movie> GetById(int id)
         {
             // First throws exception if no matches found
@@ -64,5 +88,6 @@ namespace Infrastructure.Repositories
             var pagedMovies = new PagedResultSet<Movie>(movies, pageNumber, pageSize, totalMoviesCountByGenre);
             return pagedMovies;
         }
+
     }
 }

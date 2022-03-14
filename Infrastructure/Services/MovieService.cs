@@ -96,5 +96,24 @@ namespace Infrastructure.Services
 
             return new PagedResultSet<MovieCardModel>(movieCards, pageNumber, pageSize, pagedMovies.Count);
         }
+
+        public async Task<List<MovieCardModel>> GetOwnedMoviesByUser(int userId)
+        {
+            var movies = await _movieRepository.GetOwnedMoviesByUser(userId);
+            var movieCards = new List<MovieCardModel>();
+
+            // mapping entities data into models data
+            foreach (var movie in movies)
+            {
+                movieCards.Add(new MovieCardModel
+                {
+                    Id = movie.Id,
+                    PosterUrl = movie.PosterUrl,
+                    Title = movie.Title
+                });
+            }
+
+            return movieCards;
+        }
     }
 }
