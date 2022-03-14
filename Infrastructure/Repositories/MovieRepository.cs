@@ -58,6 +58,7 @@ namespace Infrastructure.Repositories
             var movieDetails = await _dbContext.Movies.Include(m => m.Genres).ThenInclude(m => m.Genre)
                 .Include(m => m.MovieCasts).ThenInclude(m => m.Cast)
                 .Include(m => m.Trailers)
+                .Include(m => m.Reviews)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             return movieDetails;

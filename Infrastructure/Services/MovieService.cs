@@ -27,6 +27,27 @@ namespace Infrastructure.Services
                 Id = movie.Id, Price = movie.Price, Budget = movie.Budget, Overview = movie.Overview, Revenue = movie.Revenue, Tagline = movie.Tagline, Title = movie.Title, ImdbUrl = movie.ImdbUrl, RunTime = movie.RunTime, BackdropUrl = movie.BackdropUrl, PosterUrl = movie.PosterUrl, ReleaseDate = movie.ReleaseDate, TmdbUrl = movie.TmdbUrl
             };
 
+            movieDetails.Reviews = new List<ReviewModel>();
+            foreach (var review in movie.Reviews)
+            {
+                movieDetails.Reviews.Add(new ReviewModel
+                {   
+                    UserId = review.UserId,
+                    Rating = review.Rating,
+                    ReviewText = review.ReviewText
+                });
+            }
+
+            var numRatingCount = 0;
+            var ratingTotal = 0.0m;
+
+            foreach (var rating in movie.Reviews)
+            {
+                ratingTotal += rating.Rating;
+                numRatingCount++;
+            }
+            movieDetails.Rating = Decimal.Round(ratingTotal / numRatingCount, 1);
+
             movieDetails.Genres = new List<GenreModel>();
             foreach (var genre in movie.Genres)
             {

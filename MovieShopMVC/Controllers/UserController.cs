@@ -24,7 +24,7 @@ namespace MovieShopMVC.Controllers
         public async Task<IActionResult> Purchases()
         {
             var userId = _currentUser.UserId;
-            var movies = _movieService.GetOwnedMoviesByUser(userId);
+            var movies = await _movieService.GetOwnedMoviesByUser(userId);
             return View(movies);
         }
 
@@ -45,7 +45,7 @@ namespace MovieShopMVC.Controllers
         {
             var userId = _currentUser.UserId;
             await _userService.PurchaseMovie(model, userId);
-            return View();
+            return LocalRedirect("~/");
         }
 
         [HttpPost]
