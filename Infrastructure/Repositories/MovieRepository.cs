@@ -26,7 +26,7 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Movie>> GetOwnedMoviesByUser(int userId)
         {
-            // get total owned movies count for the user
+            // get total owned movies for that user
             var totalMoviesOwnedByUser = await _dbContext.Purchases.Where(p => p.UserId == userId).CountAsync();
 
             // get the actual movies from MovieGenre and Movie Table
@@ -35,13 +35,13 @@ namespace Infrastructure.Repositories
                 throw new Exception("User does not own any movies");
             }
 
-            var movies = await _dbContext.Purchases.Where(u => u.UserId == userId).Include(m => m.Movie)
-                .OrderBy(m => m.MovieId)
-                .Select(m => new Movie
+            var movies = await _dbContext.Purchases.Where(u => u.UserId == userId).Include(p => p.Movie)
+                .OrderBy(p => p.MovieId)
+                .Select(p => new Movie
                 {
-                    Id = m.MovieId,
-                    PosterUrl = m.Movie.PosterUrl,
-                    Title = m.Movie.Title
+                    Id = p.MovieId,
+                    PosterUrl = p.Movie.PosterUrl,
+                    Title = p.Movie.Title
                 })
                 .ToListAsync();
 

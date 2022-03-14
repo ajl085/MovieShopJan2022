@@ -61,7 +61,7 @@
                     {
                         <li class="list-group-item">
                             <div class="d-inline-block" style="padding: 15px"><img src=@cast.ProfilePath class="rounded-circle img-fluid" style="width: 2rem"></div>
-                            <div class="d-inline-block" style="padding: 15px"><a href=@cast.TmdbUrl style="text-decoration:none; color:black">@cast.Name</a></div>
+                            <div class="d-inline-block" style="padding: 15px"><a asp-controller="Casts" asp-action="Details" asp-route-id="@cast.Id" style="text-decoration:none; color:black">@cast.Name</a></div>
                             <div class="d-inline-block" style="padding: 15px">@cast.Character</div>
                         </li>
                     }
@@ -84,7 +84,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Purchase</button>
+                    <button asp-controller="User" asp-action="BuyMovie" type="button" class="btn btn-primary">Purchase</button>
                 </div>
             </div>
         </div>

@@ -4,5 +4,19 @@
     ViewData["Title"] = "Cast Details";
 }
 
-<h6>@Model.Name</h6>
-<h6>@Model.Gender</h6>
+<h1>@Model.Name</h1>
+<img src="@Model.ProfilePath"" alt="Profile Image"/>
+<p>Gender: @Model.Gender</p>
+<a href="@Model.TmdbUrl" target="_blank" style="text-decoration:none; color:black">Tmdb Link</a>
+
+<br>
+
+<h2>Movies</h2>
+<ul class="list-group list-group-flush">
+    @foreach (var movie in @Model.Movies)
+    {
+        <li class="list-group-item">
+            <div class="d-inline-block" style="padding: 15px">@movie.Title</div>
+        </li>
+    }
+</ul>

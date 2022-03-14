@@ -15,6 +15,7 @@ namespace Infrastructure.Services
         private readonly IUserRepository _userRepository;
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IMovieRepository _movieRepository;
+        private readonly IMovieService _movieService;
 
         public UserService(IUserRepository userRepository)
         {
@@ -48,7 +49,7 @@ namespace Infrastructure.Services
 
         public async Task<List<MovieCardModel>> GetAllPurchasesForUser(int id)
         {
-            var movies = await _movieRepository.GetTop30RevenueMovies();
+            var movies = await _movieService.GetOwnedMoviesByUser(id);
             var movieCards = new List<MovieCardModel>();
 
             // mapping entities data into models data

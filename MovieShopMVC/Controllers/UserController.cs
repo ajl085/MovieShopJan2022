@@ -13,7 +13,6 @@ namespace MovieShopMVC.Controllers
     {
         private readonly ICurrentUser _currentUser;
         private readonly IUserService _userService;
-        private readonly IMovieService _movieService;
 
         public UserController(ICurrentUser currentUser)
         {
@@ -24,8 +23,8 @@ namespace MovieShopMVC.Controllers
         public async Task<IActionResult> Purchases()
         {
             var userId = _currentUser.UserId;
-            var movies = await _movieService.GetOwnedMoviesByUser(userId);
-            return View(movies);
+            //var movies = await _movieService.GetOwnedMoviesByUser(userId);
+            return View();
         }
 
         [HttpGet]
@@ -46,6 +45,7 @@ namespace MovieShopMVC.Controllers
             var userId = _currentUser.UserId;
             await _userService.PurchaseMovie(model, userId);
             return LocalRedirect("~/");
+            return View();
         }
 
         [HttpPost]
