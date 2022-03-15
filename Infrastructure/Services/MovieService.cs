@@ -136,5 +136,19 @@ namespace Infrastructure.Services
 
             return movieCards;
         }
+
+        public async Task<PurchaseRequestModel> GetPurchaseRequestModel(int movieId)
+        {
+            var movie = await _movieRepository.GetById(movieId);
+
+            var purchaseDetails = new PurchaseRequestModel
+            {
+                movieId = movie.Id,
+                Title = movie.Title,
+                Price = movie.Price
+            };
+
+            return purchaseDetails;
+        }
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Entities
+namespace ApplicationCore.Models
 {
-    public class Purchase   
+    public class PurchaseDetailsModel
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -14,7 +14,5 @@ namespace ApplicationCore.Entities
         public decimal? TotalPrice { get; set; }
         public DateTime PurchaseDateTime { get; set; }
         public int MovieId { get; set; }
-        public User Customer { get; set; }
-        public Movie Movie { get; set; }
     }
 }

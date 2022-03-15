@@ -15,5 +15,6 @@ namespace ApplicationCore.Contracts.Services
         Task<MovieDetailsModel> GetMovieDetails(int id);
         Task<PagedResultSet<MovieCardModel>> GetMoviesByGenrePagination(int genreId, int pageSize = 30, int pageNumber = 1);
         Task<List<MovieCardModel>> GetOwnedMoviesByUser(int userId);
+        Task<PurchaseRequestModel> GetPurchaseRequestModel(int movieId);
     }
 }

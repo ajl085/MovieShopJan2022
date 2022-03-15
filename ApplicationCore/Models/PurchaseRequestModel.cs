@@ -10,6 +10,6 @@ namespace ApplicationCore.Models
     {
         public int movieId { get; set; }
         public string Title { get; set; }
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
     }
 }

@@ -17,9 +17,12 @@ namespace Infrastructure.Services
         private readonly IMovieRepository _movieRepository;
         private readonly IMovieService _movieService;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IPurchaseRepository purchaseRepository, IMovieService movieService, IMovieRepository movieRepository)
         {
             _userRepository = userRepository;
+            _purchaseRepository = purchaseRepository;
+            _movieService = movieService;
+            _movieRepository = movieRepository;
         }
 
         public Task AddFavorite(FavoriteRequestModel favoriteRequest)
@@ -50,20 +53,8 @@ namespace Infrastructure.Services
         public async Task<List<MovieCardModel>> GetAllPurchasesForUser(int id)
         {
             var movies = await _movieService.GetOwnedMoviesByUser(id);
-            var movieCards = new List<MovieCardModel>();
-
-            // mapping entities data into models data
-            foreach (var movie in movies)
-            {
-                movieCards.Add(new MovieCardModel
-                {
-                    Id = movie.Id,
-                    PosterUrl = movie.PosterUrl,
-                    Title = movie.Title
-                });
-            }
-
-            return movieCards;
+            
+            return movies;
         }
 
         public Task GetAllReviewsByUser(int id)
@@ -71,9 +62,22 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task GetPurchasesDetails(int userId, int movieId)
+        public async Task<PurchaseDetailsModel> GetPurchasesDetails(int userId, int movieId)
         {
-            throw new NotImplementedException();
+            var dbPurchase = await _purchaseRepository.GetPurchaseById(userId, movieId);
+
+            var purchaseDetails = new PurchaseDetailsModel
+            {
+                Id = dbPurchase.Id,
+                UserId = userId,
+                PurchaseNumber = dbPurchase.PurchaseNumber,
+                TotalPrice = dbPurchase.TotalPrice,
+                PurchaseDateTime = dbPurchase.PurchaseDateTime,
+                MovieId = movieId
+            };
+
+            return purchaseDetails;
+
         }
 
         public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)

@@ -84,7 +84,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button asp-controller="User" asp-action="BuyMovie" type="button" class="btn btn-primary">Purchase</button>
+                    <button asp-controller="User" asp-action="BuyMovie" asp-route-id="@Model.Id" type="submit" class="btn btn-primary">Purchase</button>
                 </div>
             </div>
         </div>
