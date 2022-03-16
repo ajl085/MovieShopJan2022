@@ -15,14 +15,16 @@ namespace Infrastructure.Services
         private readonly IUserRepository _userRepository;
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IMovieRepository _movieRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMovieService _movieService;
 
-        public UserService(IUserRepository userRepository, IPurchaseRepository purchaseRepository, IMovieService movieService, IMovieRepository movieRepository)
+        public UserService(IUserRepository userRepository, IPurchaseRepository purchaseRepository, IMovieService movieService, IMovieRepository movieRepository, IReviewRepository reviewRepository)
         {
             _userRepository = userRepository;
             _purchaseRepository = purchaseRepository;
             _movieService = movieService;
             _movieRepository = movieRepository;
+            _reviewRepository = reviewRepository;
         }
 
         public Task AddFavorite(FavoriteRequestModel favoriteRequest)
@@ -30,9 +32,28 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task AddMovieReview(ReviewRequestModel reviewRequest)
+        public async Task AddMovieReview(ReviewRequestModel reviewRequest)
         {
-            throw new NotImplementedException();
+            // check whether user has already made a review on this movie
+            // go to review repository and get review record from review table by userId and movieId
+
+            var dbReview = await _reviewRepository.GetReviewById(reviewRequest.UserId, reviewRequest.MovieId);
+
+            if (dbReview == null)
+            {
+                // continue with new review
+
+                var newReview = new Review
+                {
+                    MovieId = reviewRequest.MovieId,
+                    UserId = reviewRequest.UserId,
+                    Rating = reviewRequest.Rating,
+                    ReviewText = reviewRequest.ReviewText
+                };
+
+                // save review to Review Table
+                await _reviewRepository.Add(newReview);
+            }
         }
 
         public Task DeleteMovieReview(int userId, int movieId)
@@ -57,9 +78,11 @@ namespace Infrastructure.Services
             return movies;
         }
 
-        public Task GetAllReviewsByUser(int id)
+        public async Task<List<MovieCardModel>> GetAllReviewsByUser(int id)
         {
-            throw new NotImplementedException();
+            var movies = await _movieService.GetReviewedMoviesByUser(id);
+
+            return movies;
         }
 
         public async Task<PurchaseDetailsModel> GetPurchasesDetails(int userId, int movieId)
@@ -80,18 +103,18 @@ namespace Infrastructure.Services
 
         }
 
-        public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
+        public async Task<bool> IsMoviePurchased(int movieId, int userId)
         {
             // check whether user has already purchased the movie
             // go to purchase repository and get purchase record from purchase table by userId and movieId
 
-            var dbPurchase = await _purchaseRepository.GetPurchaseById(userId, purchaseRequest.MovieId);
+            var dbPurchase = await _purchaseRepository.GetPurchaseById(userId, movieId);
 
-            if (dbPurchase != null)
+            if (dbPurchase == null)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
         public async Task PurchaseMovie(PurchaseRequestModel purchaseRequest, int userId)

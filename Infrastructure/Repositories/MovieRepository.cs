@@ -95,5 +95,29 @@ namespace Infrastructure.Repositories
             var movie = await _dbContext.Movies.FirstOrDefaultAsync(m => m.Id == movieId);
             return movie.Price.GetValueOrDefault();
         }
+
+        public async Task<IEnumerable<Movie>> GetReviewedMoviesByUser(int userId)
+        {
+            // get total reviewed movies for that user
+            var totalMoviesReviewedByUser = await _dbContext.Reviews.Where(r => r.UserId == userId).CountAsync();
+
+            // get the actual movies from Movie Table
+            if (totalMoviesReviewedByUser == 0)
+            {
+                throw new Exception("User has not made any movie reviews");
+            }
+
+            var movies = await _dbContext.Reviews.Where(u => u.UserId == userId).Include(r => r.Movie)
+                .OrderBy(r => r.MovieId)
+                .Select(r => new Movie
+                {
+                    Id = r.MovieId,
+                    PosterUrl = r.Movie.PosterUrl,
+                    Title = r.Movie.Title
+                })
+                .ToListAsync();
+
+            return movies;
+        }
     }
 }

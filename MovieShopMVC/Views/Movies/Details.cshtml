@@ -24,8 +24,18 @@
             <p class="text-white" style="padding-top: 5px">@Model.Overview</p>
         </div>
         <div class="col-3 position-relative">
+            
+            
             <button type="button" class="btn btn-outline-light position-absolute bottom-50 start-50" display="block" style="margin-bottom: 5px; width: 150px" data-bs-toggle="modal" data-bs-target="#reviewMovieModal">REVIEW</button>
-            <button type="button" class="btn btn-light position-absolute top-50 start-50" display="block" style="margin-top: 5px; width: 150px" data-bs-toggle="modal" data-bs-target="#buyMovieModal">BUY $@Model.Price</button>
+            
+            @if (@ViewBag.MoviePurchased)
+            {
+                <button type="button" class="btn btn-light position-absolute top-50 start-50" display="block" style="margin-top: 5px; width: 150px">Watch</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-light position-absolute top-50 start-50" display="block" style="margin-top: 5px; width: 150px" data-bs-toggle="modal" data-bs-target="#buyMovieModal">BUY $@Model.Price</button>
+            }
         </div>
     </div>
     <div class="row">
@@ -93,39 +103,41 @@
         </div>
     </form>
 
+    <form asp-controller="User" asp-action="ReviewMovie" method="post">
     <!-- Review Movie Modal -->
-    <div class="modal fade" id="reviewMovieModal" tabindex="-1" aria-labelledby="reviewMovieModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reviewMovieModalLabel">Review Movie</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <select class="form-select" aria-label="Review Movie Modal">
-                        <option selected>Give your rating</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-
-                    <div>
-                        <label for="reviewTextArea" class="form-label">Review</label>
-                        <textarea class="form-control" id="reviewTextArea" rows="3"></textarea>
+        <div class="modal fade" id="reviewMovieModal" tabindex="-1" aria-labelledby="reviewMovieModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewMovieModalLabel">Review Movie</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <input type="hidden" value="@Model.Id" name="MovieId">
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <div class="modal-body">
+                        <select class="form-select" aria-label="Review Movie Modal" name="Rating">
+                            <option selected>Give your rating</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <div>
+                            <label for="reviewTextArea" class="form-label">Review</label>
+                            <textarea class="form-control" id="reviewTextArea" rows="3" name="ReviewText"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <input type="submit" value="Submit" name="btnReviewMovie" class="btn btn-primary" >
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>

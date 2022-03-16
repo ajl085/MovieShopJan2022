@@ -18,6 +18,7 @@ namespace ApplicationCore.Contracts.Repositories
         // Task<(IEnumerable<Movie>, int totalCount, int totalPages)> GetMoviesByGenres(int genreId, int pageSize = 30, int pageNumber = 1);
         Task<PagedResultSet<Movie>> GetMoviesByGenres(int genreId, int pageSize = 30, int pageNumber = 1);
         Task<IEnumerable<Movie>> GetOwnedMoviesByUser(int userId);
+        Task<IEnumerable<Movie>> GetReviewedMoviesByUser(int userId);
         Task<decimal> GetMoviePrice(int movieId);
     }
 }

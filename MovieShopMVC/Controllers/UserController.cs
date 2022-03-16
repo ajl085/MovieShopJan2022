@@ -39,7 +39,9 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Reviews()
         {
-            return View();
+            var userId = _currentUser.UserId;
+            var allReviews = await _userService.GetAllReviewsByUser(userId);
+            return View(allReviews);
         }
 
         [HttpPost]
@@ -67,9 +69,19 @@ namespace MovieShopMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewMovie()
+        public async Task<IActionResult> ReviewMovie(int movieId, decimal rating, string reviewText)
         {
-            return View();
+            var userId = _currentUser.UserId;
+            var reviewRequest = new ReviewRequestModel
+            {
+                MovieId = movieId,
+                UserId = userId,
+                Rating = rating,
+                ReviewText = reviewText
+            };
+
+            await _userService.AddMovieReview(reviewRequest);
+            return RedirectToAction("Reviews");
         }
     }
 }

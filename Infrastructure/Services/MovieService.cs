@@ -146,5 +146,24 @@ namespace Infrastructure.Services
         {
             return await _movieRepository.GetMoviePrice(movieId);
         }
+
+        public async Task<List<MovieCardModel>> GetReviewedMoviesByUser(int userId)
+        {
+            var movies = await _movieRepository.GetReviewedMoviesByUser(userId);
+            var movieCards = new List<MovieCardModel>();
+
+            // mapping entities data into models data
+            foreach (var movie in movies)
+            {
+                movieCards.Add(new MovieCardModel
+                {
+                    Id = movie.Id,
+                    PosterUrl = movie.PosterUrl,
+                    Title = movie.Title
+                });
+            }
+
+            return movieCards;
+        }
     }
 }
