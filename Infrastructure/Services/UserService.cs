@@ -17,19 +17,38 @@ namespace Infrastructure.Services
         private readonly IMovieRepository _movieRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly IMovieService _movieService;
+        private readonly IFavoriteRepository _favoriteRepository;
 
-        public UserService(IUserRepository userRepository, IPurchaseRepository purchaseRepository, IMovieService movieService, IMovieRepository movieRepository, IReviewRepository reviewRepository)
+        public UserService(IUserRepository userRepository, IPurchaseRepository purchaseRepository, IMovieService movieService, IMovieRepository movieRepository, IReviewRepository reviewRepository, IFavoriteRepository favoriteRepository)
         {
             _userRepository = userRepository;
             _purchaseRepository = purchaseRepository;
             _movieService = movieService;
             _movieRepository = movieRepository;
             _reviewRepository = reviewRepository;
+            _favoriteRepository = favoriteRepository;
         }
 
-        public Task AddFavorite(FavoriteRequestModel favoriteRequest)
+        public async Task AddFavorite(FavoriteRequestModel favoriteRequest)
         {
-            throw new NotImplementedException();
+            // check whether user has already added the movie to favorites
+            // go to favorite repository and get favorite record from favorite table by userId and movieId
+
+            var dbFavorite = await _favoriteRepository.GetFavoriteById(favoriteRequest.UserId, favoriteRequest.MovieId);
+
+            if (dbFavorite == null)
+            {
+                // continue with new favorite
+
+                var newFavorite = new Favorite
+                {
+                    MovieId = favoriteRequest.MovieId,
+                    UserId = favoriteRequest.UserId
+                };
+
+                // save favorite to Favorite Table
+                await _favoriteRepository.Add(newFavorite);
+            }
         }
 
         public async Task AddMovieReview(ReviewRequestModel reviewRequest)
@@ -66,9 +85,11 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task GetAllFavoritesForUser(int id)
+        public async Task<List<MovieCardModel>> GetAllFavoritesForUser(int id)
         {
-            throw new NotImplementedException();
+            var movies = await _movieService.GetFavoritedMoviesByUser(id);
+
+            return movies;
         }
 
         public async Task<List<MovieCardModel>> GetAllPurchasesForUser(int id)

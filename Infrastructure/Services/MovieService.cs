@@ -165,5 +165,24 @@ namespace Infrastructure.Services
 
             return movieCards;
         }
+
+        public async Task<List<MovieCardModel>> GetFavoritedMoviesByUser(int userId)
+        {
+            var movies = await _movieRepository.GetFavoritedMoviesByUser(userId);
+            var movieCards = new List<MovieCardModel>();
+
+            // mapping entities data into models data
+            foreach (var movie in movies)
+            {
+                movieCards.Add(new MovieCardModel
+                {
+                    Id = movie.Id,
+                    PosterUrl = movie.PosterUrl,
+                    Title = movie.Title
+                });
+            }
+
+            return movieCards;
+        }
     }
 }

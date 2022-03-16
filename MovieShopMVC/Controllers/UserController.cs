@@ -33,7 +33,9 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Favorites()
         {
-            return View();
+            var userId = _currentUser.UserId;
+            var favoritedMovies = await _userService.GetAllFavoritesForUser(userId);
+            return View(favoritedMovies);
         }
 
         [HttpGet]
@@ -63,9 +65,18 @@ namespace MovieShopMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> FavoriteMovie()
+        public async Task<IActionResult> FavoriteMovie(int movieId)
         {
-            return View();
+            var userId = _currentUser.UserId;
+            var favoriteRequest = new FavoriteRequestModel
+            {
+                MovieId = movieId,
+                UserId = userId
+            };
+
+            await _userService.AddFavorite(favoriteRequest);
+            return RedirectToAction("Favorites");
+
         }
 
         [HttpPost]

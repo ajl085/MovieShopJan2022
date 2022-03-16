@@ -24,7 +24,10 @@
             <p class="text-white" style="padding-top: 5px">@Model.Overview</p>
         </div>
         <div class="col-3 position-relative">
-            
+            <form asp-controller="User" asp-action="FavoriteMovie" method="post">
+                <input type="hidden" value="@Model.Id" name="MovieId">
+                <input type="submit" value="Add to Favorites" name="btnFavoriteMovie" class="btn btn-warning" display="block" style="margin-top: 15px; margin-left: 150px; width: 150px" >
+            </form>
             
             <button type="button" class="btn btn-outline-light position-absolute bottom-50 start-50" display="block" style="margin-bottom: 5px; width: 150px" data-bs-toggle="modal" data-bs-target="#reviewMovieModal">REVIEW</button>
             

@@ -119,5 +119,29 @@ namespace Infrastructure.Repositories
 
             return movies;
         }
+
+        public async Task<IEnumerable<Movie>> GetFavoritedMoviesByUser(int userId)
+        {
+            // get total favorited movies for that user
+            var totalMoviesFavoritedByUser = await _dbContext.Favorites.Where(f => f.UserId == userId).CountAsync();
+
+            // get the actual movies from Movie Table
+            if (totalMoviesFavoritedByUser == 0)
+            {
+                throw new Exception("User has not added any movies to favorites");
+            }
+
+            var movies = await _dbContext.Favorites.Where(u => u.UserId == userId).Include(f => f.Movie)
+                .OrderBy(f => f.MovieId)
+                .Select(f => new Movie
+                {
+                    Id = f.MovieId,
+                    PosterUrl = f.Movie.PosterUrl,
+                    Title = f.Movie.Title
+                })
+                .ToListAsync();
+
+            return movies;
+        }
     }
 }
