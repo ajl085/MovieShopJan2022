@@ -85,7 +85,7 @@ namespace Infrastructure.Services
             // check whether user has already purchased the movie
             // go to purchase repository and get purchase record from purchase table by userId and movieId
 
-            var dbPurchase = await _purchaseRepository.GetPurchaseById(userId, purchaseRequest.movieId);
+            var dbPurchase = await _purchaseRepository.GetPurchaseById(userId, purchaseRequest.MovieId);
 
             if (dbPurchase != null)
             {
@@ -99,7 +99,7 @@ namespace Infrastructure.Services
             // check whether user has already purchased the movie
             // go to purchase repository and get purchase record from purchase table by userId and movieId
 
-            var dbPurchase = await _purchaseRepository.GetPurchaseById(userId, purchaseRequest.movieId);
+            var dbPurchase = await _purchaseRepository.GetPurchaseById(userId, purchaseRequest.MovieId);
 
             if (dbPurchase == null)
             {
@@ -108,9 +108,10 @@ namespace Infrastructure.Services
                 var newPurchase = new Purchase
                 {
                     UserId = userId,
-                    TotalPrice = purchaseRequest.Price,
-                    PurchaseDateTime = DateTime.Now,
-                    MovieId = purchaseRequest.movieId
+                    PurchaseNumber = purchaseRequest.PurchaseNumber,
+                    TotalPrice = purchaseRequest.TotalPrice,
+                    PurchaseDateTime = purchaseRequest.PurchaseDateTime,
+                    MovieId = purchaseRequest.MovieId
                 };
 
                 // save purchase to Purchase Table

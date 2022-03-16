@@ -90,5 +90,10 @@ namespace Infrastructure.Repositories
             return pagedMovies;
         }
 
+        public async Task<decimal> GetMoviePrice(int movieId)
+        {
+            var movie = await _dbContext.Movies.FirstOrDefaultAsync(m => m.Id == movieId);
+            return movie.Price.GetValueOrDefault();
+        }
     }
 }

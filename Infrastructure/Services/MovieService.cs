@@ -139,16 +139,12 @@ namespace Infrastructure.Services
 
         public async Task<PurchaseRequestModel> GetPurchaseRequestModel(int movieId)
         {
-            var movie = await _movieRepository.GetById(movieId);
+            throw new NotImplementedException();
+        }
 
-            var purchaseDetails = new PurchaseRequestModel
-            {
-                movieId = movie.Id,
-                Title = movie.Title,
-                Price = movie.Price
-            };
-
-            return purchaseDetails;
+        public async Task<decimal> GetMoviePrice(int movieId)
+        {
+            return await _movieRepository.GetMoviePrice(movieId);
         }
     }
 }
