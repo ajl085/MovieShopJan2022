@@ -184,5 +184,24 @@ namespace Infrastructure.Services
 
             return movieCards;
         }
+
+        public async Task<List<MovieCardModel>> GetTop30RatedMovies()
+        {
+            var movies = await _movieRepository.GetTop30RatedMovies();
+            var movieCards = new List<MovieCardModel>();
+
+            // mapping entities data into models data
+            foreach (var movie in movies)
+            {
+                movieCards.Add(new MovieCardModel
+                {
+                    Id = movie.Id,
+                    PosterUrl = movie.PosterUrl,
+                    Title = movie.Title
+                });
+            }
+
+            return movieCards;
+        }
     }
 }

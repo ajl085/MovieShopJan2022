@@ -32,7 +32,7 @@ namespace MovieShopMVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult TopMovies()
+        public async Task<IActionResult> TopMovies()
         {
             return View();
         }

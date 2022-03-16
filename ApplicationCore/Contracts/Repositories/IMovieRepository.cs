@@ -11,6 +11,7 @@ namespace ApplicationCore.Contracts.Repositories
     public interface IMovieRepository : IRepository<Movie>
     {
         Task<IEnumerable<Movie>> GetTop30RevenueMovies();
+        Task<IEnumerable<Movie>> GetTop30RatedMovies();
 
         // totalcount, pagesize, pageNumber, TotalPages
         // PagedModel => 

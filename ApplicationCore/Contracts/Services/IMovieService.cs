@@ -12,6 +12,7 @@ namespace ApplicationCore.Contracts.Services
     {
         // have all the business logic methods relating to Movies
         Task<List<MovieCardModel>> GetTop30GrossingMovies();
+        Task<List<MovieCardModel>> GetTop30RatedMovies();
         Task<MovieDetailsModel> GetMovieDetails(int id);
         Task<PagedResultSet<MovieCardModel>> GetMoviesByGenrePagination(int genreId, int pageSize = 30, int pageNumber = 1);
         Task<List<MovieCardModel>> GetOwnedMoviesByUser(int userId);
