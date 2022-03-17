@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Contracts.Repositories
 {
-    public interface IReviewRepository : IRepository<Review>
-    { 
-        Task<Review> GetReviewById(int userId, int movieId);
-        Task<IEnumerable<Review>> GetAllReviewsByMovieId(int movieId);
+    public interface IGenreRepository : IRepository<Genre>
+    {
+        Task<IEnumerable<Genre>> GetGenres();
     }
 }

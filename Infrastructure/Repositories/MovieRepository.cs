@@ -146,8 +146,32 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Movie>> GetTop30RatedMovies()
         {
-            var movies = await _dbContext.Movies.OrderByDescending(m => m.Rating).Take(30).ToListAsync();
-            return movies;
+            throw new NotImplementedException();
+        }
+
+        public async Task<PagedResultSet<Movie>> GetAllMovies(int pageSize = 30, int pageNumber = 1)
+        {
+            // get total movies count
+            var totalMoviesCount = await _dbContext.Movies.CountAsync();
+
+            // get the actual movies from Movie Table
+            if (totalMoviesCount == 0)
+            {
+                throw new Exception("No Movies Found");
+            }
+
+            var movies = await _dbContext.Movies
+                .OrderBy(m => m.Id)
+                .Select(m => new Movie
+                {
+                    Id = m.Id,
+                    PosterUrl = m.PosterUrl,
+                    Title = m.Title
+                })
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var pagedMovies = new PagedResultSet<Movie>(movies, pageNumber, pageSize, totalMoviesCount);
+            return pagedMovies;
         }
     }
 }

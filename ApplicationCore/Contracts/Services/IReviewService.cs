@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Contracts.Services
 {
-    public interface IGenreService
+    public interface IReviewService
     {
-        Task<List<GenreModel>> GetGenres();
+        Task<List<ReviewModel>> GetAllReviewsByMovieId(int id);
     }
 }
