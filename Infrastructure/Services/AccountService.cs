@@ -70,7 +70,8 @@ namespace Infrastructure.Services
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    DateOfBirth = user.DateOfBirth.GetValueOrDefault()
+                    DateOfBirth = user.DateOfBirth.GetValueOrDefault(),
+                    Roles = user.UserRoles.Select(r => new RoleModel { Id = r.RoleId, Name = r.Role.Name}).ToList()
                 };
             }
 
