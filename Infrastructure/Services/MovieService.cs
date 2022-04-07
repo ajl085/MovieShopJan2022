@@ -24,7 +24,7 @@ namespace Infrastructure.Services
 
             var movieDetails = new MovieDetailsModel
             {
-                Id = movie.Id, Price = movie.Price, Budget = movie.Budget, Overview = movie.Overview, Revenue = movie.Revenue, Tagline = movie.Tagline, Title = movie.Title, ImdbUrl = movie.ImdbUrl, RunTime = movie.RunTime, BackdropUrl = movie.BackdropUrl, PosterUrl = movie.PosterUrl, ReleaseDate = movie.ReleaseDate, TmdbUrl = movie.TmdbUrl
+                Id = movie.Id, Price = movie.Price, Budget = movie.Budget, Overview = movie.Overview, Revenue = movie.Revenue, Tagline = movie.Tagline, Title = movie.Title, ImdbUrl = movie.ImdbUrl, RunTime = movie.RunTime, BackdropUrl = movie.BackdropUrl, PosterUrl = movie.PosterUrl, ReleaseDate = movie.ReleaseDate, TmdbUrl = movie.TmdbUrl, Rating = movie.Rating
             };
 
             movieDetails.Reviews = new List<ReviewModel>();

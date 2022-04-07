@@ -36,7 +36,7 @@ namespace MovieShopAPI.Controllers
         }
 
         // api/movies/3
-        [Route("{id:int}")]
+        [Route("{id:int}", Name = "GetMovie")]
         [HttpGet]
         public async Task<IActionResult> GetMovie(int id)
         {
